@@ -122,19 +122,19 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>High</fullName>
+                    <fullName>Taas</fullName>
                     <default>false</default>
-                    <label>High</label>
-                </value>
-                <value>
-                    <fullName>Low</fullName>
-                    <default>false</default>
-                    <label>Low</label>
+                    <label>Taas</label>
                 </value>
                 <value>
                     <fullName>Medium</fullName>
                     <default>false</default>
                     <label>Medium</label>
+                </value>
+                <value>
+                    <fullName>Low</fullName>
+                    <default>false</default>
+                    <label>Low</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -164,6 +164,18 @@
     <fields>
         <fullName>Jigsaw</fullName>
         <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>MidEnvirDep__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Custom Field for testing deployments from environments in between deployment flows</inlineHelpText>
+        <label>MidEnvirDep</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>NaicsCode</fullName>

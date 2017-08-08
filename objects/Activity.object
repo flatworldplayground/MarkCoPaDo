@@ -33,6 +33,29 @@
         <type>Default</type>
     </actionOverrides>
     <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>water__c</fullName>
+        <externalId>false</externalId>
+        <label>water</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>etc</fullName>
+                    <default>false</default>
+                    <label>etc</label>
+                </value>
+                <value>
+                    <fullName>H20</fullName>
+                    <default>false</default>
+                    <label>H20</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
     <listViews>
         <fullName>AllActivities</fullName>
         <filterScope>Team</filterScope>
