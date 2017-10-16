@@ -164,6 +164,16 @@
         <label>Custom Fields</label>
     </fieldSets>
     <fields>
+        <fullName>copado__Back_Promotion__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Checked if the promotion is from a higher environment to a lower environment in the deployment flow.</description>
+        <externalId>false</externalId>
+        <label>Back Promotion</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>copado__Create_Full_Permission_Sets_Step__c</fullName>
         <defaultValue>false</defaultValue>
         <deprecated>false</deprecated>

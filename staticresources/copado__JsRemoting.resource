@@ -3,6 +3,7 @@ var JsRemoting = JsRemoting || {};
 JsRemoting.common = JsRemoting.common || {};
 JsRemoting.attachments = JsRemoting.attachments || {};
 JsRemoting.apiKey = JsRemoting.apiKey || {};
+JsRemoting.metaData = JsRemoting.metaData || {};
 JsRemoting.backDeploy = JsRemoting.backDeploy || {};
 JsRemoting.deploymentJobs = JsRemoting.deploymentJobs || {};
 JsRemoting.deploymentFlows = JsRemoting.deploymentFlows || {};
@@ -23,8 +24,8 @@ JsRemoting.attachments.getAttachmentByFileName = function(parentId, name){
 JsRemoting.attachments.getDecodedAttachment = function(parentId, name){
     var a = JsRemoting.attachments.getAttachmentByFileName(parentId, name);
     if(!a.length)return null;
-    a.Body = Base64.decode(a[0].Body);
-    return a;
+    a[0].Body = Base64.decode(a[0].Body);
+    return a[0];
 };
 JsRemoting.attachments.getDecodedAttachmentById = function(id){
     var q = 'Select Id, Body, BodyLength, LastModifiedDate, Name, ParentId From Attachment where id=\''+id+'\' limit 1';
@@ -83,6 +84,40 @@ JsRemoting.apiKey.createKey = function(ns, successCB, exceptionCB, errorCB){
             errorCB(event);
         }
     });
+};
+
+//List of Metadata types
+JsRemoting.metaData.getList = function(envId, ns, successCB, exceptionCB, errorCB){
+    var core = ns ? window[ns.split('__')[0]] : window;
+    console.debug("JsRemoting.metaData.getList starting", envId,core);
+    var attach = dw.u.getAttach(envId,'MetadataTypes');
+    console.log('Metadata type cache found : ',attach.length == 1 );
+
+    if(attach.length){
+        var res = JSON.parse(Base64.decode(attach[0].Body));
+        if(res && res.length) {
+            successCB(res);
+            return;
+        }else{
+            console.info('Could not load metadata types from attachment?', res);
+        }
+    }
+    (core).JsRemotingController.getMetadataTypes(envId,function(result, event){
+        console.debug("(core).JsRemotingController.getMetadataTypes event=", event);
+        if (event.status) {
+            dw.u.upsertAttach(envId,'MetadataTypes',JSON.stringify(result), false);
+            console.info('Upserting metadata type cache...', result);
+            successCB(result);
+        } 
+        else if (event.type === 'exception') {
+            console.error(event);
+            exceptionCB(event);
+        } 
+        else {
+            console.error(event);
+            errorCB(event);
+        }
+    },{escape : false});
 };
 
 //Deployment Flows

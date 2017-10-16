@@ -93,6 +93,13 @@
         <type>Default</type>
     </actionOverrides>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>test_Compact_layout_6207</fullName>
+        <fields>Name</fields>
+        <fields>Sex__c</fields>
+        <fields>Email</fields>
+        <label>test Compact layout 6207</label>
+    </compactLayouts>
     <enableFeeds>true</enableFeeds>
     <enableHistory>false</enableHistory>
     <fields>
