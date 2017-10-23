@@ -147,6 +147,15 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Spooky_Boi_Email__c</fullName>
+        <description>Spooki Bruv</description>
+        <externalId>false</externalId>
+        <label>Spooky Boi Email</label>
+        <required>false</required>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>StartDate</fullName>
     </fields>
     <fields>
