@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sorted>false</sorted>
+    <standardValue>
+        <fullName>Zelda</fullName>
+        <default>false</default>
+        <label>Zelda</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Chrono</fullName>
+        <default>false</default>
+        <label>Chrono</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Legaia</fullName>
+        <default>false</default>
+        <label>Legaia</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Bahamut</fullName>
+        <default>false</default>
+        <label>Bahamut</label>
+    </standardValue>
+</StandardValueSet>

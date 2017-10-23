@@ -148,6 +148,29 @@ urlCallout.createChildRows = function(array, type){
         $copado(wrapper).appendTo('#'+parentId);
     }
 };
+/**
+ * [createChildRows description]
+ * @param  {[type]} array [description]
+ * @param  {[type]} type  [description]
+ * @return {[type]}       [description]
+ */
+urlCallout.createStaticChildRows = function(array, type){
+    var parentId = (type=='param')?'urlCalloutUrlParametersView':'urlCalloutUrlHeadersView';
+    
+    var parent = document.getElementById(parentId);
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+
+    if(array.length==0 && type=='param'){
+        urlCallout.urlParams = [];
+        return;
+    }
+    for(var i=0; i<array.length; i++){
+        var wrapper = (type=='param')?urlCallout.template.staticParamRow(i, array[i]):urlCallout.template.staticHeaderRow(i, array[i]);
+        $copado(wrapper).appendTo('#'+parentId);
+    }
+};
 
 /*
  *  Convert the object array to a flat string url
@@ -289,18 +312,55 @@ urlCallout.header.validate = function(){
 urlCallout.template.paramRow = function(rowNumber, keyPair){
     var n = keyPair?keyPair[0]:'';
     var v = keyPair?keyPair[1]:'';
-    var btn = '<button id="del-param-'+rowNumber+'" onclick="urlCallout.param.deleteRow('+rowNumber+'); return false;" class="btn">Delete</button';
-    var nameField =   '<input type="text" class="js-param" id="param-'+rowNumber+'-name" data-type="name" data-al="'+rowNumber+'" value="'+n+'" />';
-    var valueField = '<input type="text" class="js-param" id="param-'+rowNumber+'-value" data-type="value" data-al="'+rowNumber+'" value="'+v+'" />';
-    var wrapper = '<div id="paramWrapper-'+rowNumber+'" style="clear:both;">'+nameField+valueField+btn+'</div>';
-    return wrapper;
+    if(typeof datasetup === "undefined"){
+        var btn = '<button id="del-param-'+rowNumber+'" onclick="urlCallout.param.deleteRow('+rowNumber+'); return false;" class="btn">Delete</button';
+        var nameField =   '<input type="text" class="js-param" id="param-'+rowNumber+'-name" data-type="name" data-al="'+rowNumber+'" value="'+n+'" />';
+        var valueField = '<input type="text" class="js-param" id="param-'+rowNumber+'-value" data-type="value" data-al="'+rowNumber+'" value="'+v+'" />';
+        var wrapper = '<div id="paramWrapper-'+rowNumber+'" style="clear:both;">'+nameField+valueField+btn+'</div>';
+        return wrapper;
+    }else{
+        var btn = '<button id="del-param-'+rowNumber+'" onclick="urlCallout.param.deleteRow('+rowNumber+'); return false;" class="btn slds-button slds-button--neutral">Delete</button>';
+        var nameField =   '<input type="text" class="js-param slds-input" id="param-'+rowNumber+'-name" data-type="name" data-al="'+rowNumber+'" value="'+n+'" />';
+        var valueField = '<input type="text" class="js-param slds-input" id="param-'+rowNumber+'-value" data-type="value" data-al="'+rowNumber+'" value="'+v+'" />';
+        var wrapper = '<div class="slds-grid" id="paramWrapper-'+rowNumber+'" style="clear:both;"><div class="slds-col">'+nameField+'</div><div class="slds-col">'+valueField+'</div><div class="slds-col">'+btn+'</div></div>';
+        return wrapper;
+        
+    }
 };
 urlCallout.template.headerRow = function(rowNumber, keyPair){
     var n = keyPair?keyPair[0]:'';
     var v = keyPair?keyPair[1]:'';
-    var btn = '<button id="del-header-'+rowNumber+'" onclick="urlCallout.header.deleteRow('+rowNumber+'); return false;" class="btn">Delete</button';
-    var nameField =   '<input type="text" class="js-header" id="header-'+rowNumber+'-name" data-type="name" data-al="'+rowNumber+'" value="'+n+'" />';
-    var valueField = '<input type="text" class="js-header" id="header-'+rowNumber+'-value" data-type="value" data-al="'+rowNumber+'" value="'+v+'" />';
-    var wrapper = '<div id="headerWrapper-'+rowNumber+'" style="clear:both;">'+nameField+valueField+btn+'</div>';
+    if(typeof datasetup === "undefined"){
+        var btn = '<button id="del-header-'+rowNumber+'" onclick="urlCallout.header.deleteRow('+rowNumber+'); return false;" class="btn">Delete</button';
+        var nameField =   '<input type="text" class="js-header" id="header-'+rowNumber+'-name" data-type="name" data-al="'+rowNumber+'" value="'+n+'" />';
+        var valueField = '<input type="text" class="js-header" id="header-'+rowNumber+'-value" data-type="value" data-al="'+rowNumber+'" value="'+v+'" />';
+        var wrapper = '<div id="headerWrapper-'+rowNumber+'" style="clear:both;">'+nameField+valueField+btn+'</div>';
+        return wrapper;
+    }else{
+        var btn = '<button id="del-header-'+rowNumber+'" onclick="urlCallout.header.deleteRow('+rowNumber+'); return false;" class="btn slds-button slds-button--neutral">Delete</button>';
+        var nameField =   '<input type="text" class="js-header slds-input" id="header-'+rowNumber+'-name" data-type="name" data-al="'+rowNumber+'" value="'+n+'" />';
+        var valueField = '<input type="text" class="js-header slds-input" id="header-'+rowNumber+'-value" data-type="value" data-al="'+rowNumber+'" value="'+v+'" />';
+        var wrapper = '<div class="slds-grid" id="headerWrapper-'+rowNumber+'" style="clear:both;"><div class="slds-col">'+nameField+'</div><div class="slds-col">'+valueField+'</div><div class="slds-col">'+btn+'</div></div>';    
+        return wrapper;        
+    }
+
+    
+};
+urlCallout.template.staticParamRow = function(rowNumber, keyPair){
+    var n = keyPair?keyPair[0]:'';
+    var v = keyPair?keyPair[1]:'';
+    
+    var nameField =   '<input disabled type="text" class="js-param slds-input" id="param-'+rowNumber+'-name" data-type="name" data-al="'+rowNumber+'" value="'+n+'" />';
+    var valueField = '<input disabled type="text" class="js-param slds-input" id="param-'+rowNumber+'-value" data-type="value" data-al="'+rowNumber+'" value="'+v+'" />';
+    var wrapper = '<div class="slds-grid" id="paramWrapper-'+rowNumber+'" style="clear:both;"><div class="slds-col">'+nameField+'</div><div class="slds-col">'+valueField+'</div></div>';
+    return wrapper;
+};
+urlCallout.template.staticHeaderRow = function(rowNumber, keyPair){
+    var n = keyPair?keyPair[0]:'';
+    var v = keyPair?keyPair[1]:'';
+    
+    var nameField =   '<input disabled type="text" class="js-header slds-input" id="header-'+rowNumber+'-name" data-type="name" data-al="'+rowNumber+'" value="'+n+'" />';
+    var valueField = '<input disabled type="text" class="js-header slds-input" id="header-'+rowNumber+'-value" data-type="value" data-al="'+rowNumber+'" value="'+v+'" />';
+    var wrapper = '<div class="slds-grid" id="headerWrapper-'+rowNumber+'" style="clear:both;"><div class="slds-col">'+nameField+'</div><div class="slds-col">'+valueField+'</div></div>';    
     return wrapper;
 };

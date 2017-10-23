@@ -34,6 +34,14 @@
     </actionOverrides>
     <enableFeeds>false</enableFeeds>
     <fields>
+        <fullName>Halloween__c</fullName>
+        <description>Ghost Concert</description>
+        <externalId>false</externalId>
+        <label>Halloween</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>water__c</fullName>
         <externalId>false</externalId>
         <label>water</label>

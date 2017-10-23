@@ -287,16 +287,7 @@ deploymentFlow.buildEnvBox = function(envName, envId, style, branch){
                         "<a onclick='javascript:return false;' id='"+envId+"_title' class='title' target='_blank'>"+envName+"</a>"+
                     "</h3>"+
                     "<div class='envContent'>"+
-                        "<ol class='rowItems'>"+
-                            "<li>"+
-                                "<div id='detailMode_"+envId+"' style='display:block;'>"+
-                                    "<div id='detailModeBody_"+envId+"' style='display:none;'>"+
-                                        "<span id='nextDestEnvHeader_"+envId+"' style='font-weight:bolder'>Next Environment: </span><span id='nextDestEnvBody_"+envId+"'></span><hr />"+
-                                    "</div>"+
-                                    "<span id='branchHeader_"+envId+"' style='font-weight:bolder'>Branch: </span><span id='branchBody_"+envId+"'>"+branch+"</span><br />"+
-                                    "<span id='viewInfo_"+envId+"'>More Details</span>"
-                            "</li>"+
-                        "</ol>"+
+                        
                     "</div>"+
                     "<input type='hidden' id='hdn_DestEnvId' value='' />"+
                     "<input type='hidden' id='hdn_DestEnvName' value='' />"+
