@@ -1,5 +1,5 @@
 var apexTestResult = {
-    ns: '',
+    ns: '',    
     userStory: [],
     attachmentBody: '',
     userStoryClassesArray: [],
@@ -25,6 +25,10 @@ var apexTestResult = {
 
     maxretries: 30,
     retries: 0,
+
+    triggersWithoutCoverage: 0,
+    classesWithoutCoverage: 0,
+    failingMethods: 0,
     
     showErrorMessage: function(){
         var me = apexTestResult;
@@ -48,12 +52,30 @@ var apexTestResult = {
         userStory[me.ns+'Apex_Code_Coverage__c'] = me.userStoryCoverage;
         userStory.Id = copadoApp.userStoryId;
         userStory[me.ns+'Has_Apex_Code__c'] = me.hasApexCode;
+        userStory[me.ns+'Classes_Without_Coverage__c'] = me.classesWithoutCoverage;
+        userStory[me.ns+'Triggers_Without_Coverage__c'] = me.triggersWithoutCoverage;
+        userStory[me.ns+'Failing_Methods__c'] = me.failingMethods;
         result = sforce.connection.update([userStory]);
-        if (result[0].getBoolean("success")) {
-            console.log('User Story successfully updated.');
+        if (result[0].getBoolean("success")) {            
+            
+            var checkCookie = me.getCookie('ApexTestRunning');
+            console.log('User Story successfully updated.',checkCookie);            
+            if(checkCookie === "true" ){
+                // Replace static message with Salesforce custom Label for v10
+                var t = confirm('User Story successfully updated with apex test results. Would you like to refresh the page?'); // Replace this with a custom label for v10.
+                if(t){
+                    me.setCookie('ApexTestRunning',null,0);
+                    parent ? parent.location.reload() : location.reload();
+                } else{
+                    me.setCookie('ApexTestRunning',null,0);
+                } 
+            } else if(checkCookie != false) {
+               me.setCookie('ApexTestRunning',null,0);
+            }                    
         }
         else{
             console.error('User Story could not be updated.');
+            me.setCookie('ApexTestRunning',null,0);
         }
     },
     updateEnvironmentCodeCoverage: function(){
@@ -179,6 +201,30 @@ var apexTestResult = {
             return;
         }
     },
+    setCookie: function(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    },
+    getCookie: function (cname) {
+        console.info('cname',cname);
+        var name = cname + "=";
+        console.info('name',name);
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            console.info('c',c);
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return false;
+    },
     /**
      * This method runs the apex test
      * lock the UI in the midtime
@@ -188,8 +234,8 @@ var apexTestResult = {
     runApexTests: function(){
         // var definition 
         var me = apexTestResult;
+        me.setCookie('ApexTestRunning',true,1);
         var namespace = '';
-
         //if there is not apex selected in the userStory
         if(me.userStoryClassesArray.length==0){
             alert(copadoLabels.NO_APEX_TESTS_FOUND);
@@ -270,8 +316,11 @@ var apexTestResult = {
                 utilsV2.onSuccessCB = function(res){
                     // the API might return the metadata directly, or a job starting with a copadoJobId
                     var obj = $copado.parseJSON(res);
-                    if(!obj.copadoJobId) {
-                        statusManager.finishJob(); // api did not start a job
+                    if(!obj.copadoJobId && statusManager) {
+                        statusManager.setStatusComplete(); // api did not start a job
+                        $copado('#divPBbuttonsLoading').hide();
+                        me.setCookie('ApexTestRunning',null,0);
+                        alert('Job couldn\'t be queued. Apex tests can be executed once in every minute. Please try again later.'); // Replace this with a custom label for v10.
                     }
                 };
                 utilsV2.getRemote(uri);
@@ -355,6 +404,15 @@ var apexTestResult = {
                 progress:  c
             }
 
+            if (booly && row.coverageStatus == copadoLabels.FAILED) {
+                if (sourceName=='classCoverageResults') {
+                    me.classesWithoutCoverage++;
+                }
+                else {
+                    me.triggersWithoutCoverage++;
+                }
+            }
+
             result.push(row);
             console.log('create coverage array', classRes);
             me.addCoverageData(classRes, booly);
@@ -427,6 +485,10 @@ var apexTestResult = {
                 row['msg'] = methods[j].message;
                 row['success'] = (methods[j].success)?'Passed':'Failed';
                 result.push(row);
+
+                if (row.success == 'Failed') {
+                    me.failingMethods++;
+                }
             }
         }
     },
@@ -448,7 +510,7 @@ var apexTestResult = {
         if(records.length == 1)me.userStory = records[0];
     },
     _init: function(){
-        var me = apexTestResult;
+        var me = apexTestResult;        
         if(copadoApp.attachmentId == null || copadoApp.attachmentId=='' && copadoApp.userStoryId == ''){
             me.showErrorMessage();
             $copado('#errorMessage').show();
@@ -502,8 +564,10 @@ var apexTestResult = {
 // because you can controll better when it will be executed
 apexTestResult.init =  function(){
     console.info('apexTestResult.init');
-
-    if(copadoApp.userStoryId!='')$copado('runTestsTab').show();
+    if(copadoApp.userStoryId!=''){
+        $copado('runTestsTab').show();
+    }
+    
     apexTestResult._init();
     $grid_class = $copado('<div>');
     $grid_trigger = $copado('<div>');

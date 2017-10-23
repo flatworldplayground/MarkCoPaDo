@@ -4,6 +4,12 @@ utilsV2 = {
     onFailureCB: function(res){},
 
     getRemote: function(url){
+    if(Copado_Licenses.hasMultiLicense && !(Copado_Licenses.hasCopado ||Copado_Licenses.hasCCM ||Copado_Licenses.hasCST) ) {
+            var errorMsgs = 'Your current license does not allow performing this action';
+            alert(errorMsgs);
+            return false;
+        }
+
         var me = utilsV2;
         console.debug('getRemote', url);
         sforce.connection.remoteFunction({
@@ -12,7 +18,6 @@ utilsV2 = {
                     "Content-Type": "text/json",
                     "userId": _temp_conf.userId,
                     "orgId": _temp_conf.orgId,
-                    "sessionId": _temp_conf.sessionId,
                     "token": _temp_conf.token
             },
             method: me.method,
@@ -42,6 +47,7 @@ utilsV2 = {
             },
             timeout: 25000
         });
+        return true;
     },
     /**
      * Gets the requested URL parameter.

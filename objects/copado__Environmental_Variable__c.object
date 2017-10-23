@@ -87,5 +87,12 @@
     <pluralLabel>Environment Variables</pluralLabel>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>copado__Value_is_required</fullName>
+        <active>true</active>
+        <errorConditionFormula>ISBLANK( copado__Value__c )</errorConditionFormula>
+        <errorDisplayField>copado__Value__c</errorDisplayField>
+        <errorMessage>Value is required</errorMessage>
+    </validationRules>
     <visibility>Public</visibility>
 </CustomObject>

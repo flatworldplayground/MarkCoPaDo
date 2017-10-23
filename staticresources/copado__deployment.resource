@@ -648,8 +648,6 @@ var copadoApp = {
         //
         var hasChanged = step.Name != newStep.name || step[copadoApp.ns + 'Type__c'] != newStep.type || step[copadoApp.ns + 'CheckOnly__c'] != newStep.check;
 
-
-
         if (hasChanged) {
             //updating local data by reference 
             step.Name = newStep.name;
@@ -856,7 +854,7 @@ var copadoApp = {
 
         $row.find('input.js-step-name').val(step.Name);
         $row.find('span.js-step-name').html(step.Name);
-        $row.find('input.js-step-check').attr('checked', step[copadoApp.ns + 'CheckOnly__c']);
+        $row.find('input.js-step-check').prop('checked', step[copadoApp.ns + 'CheckOnly__c']);
         $row.find('.js-step-type').val(step[copadoApp.ns + 'Type__c']);
 
         $row.find('.js-action-selectStep')
@@ -962,8 +960,8 @@ var copadoApp = {
             //copadoApp.lock();
             ga('send', 'event', 'Deployment', 'deploy');
             console.log('redirection! > ', window.location.protocol + '//' + window.location.host + '/apex/deploymentWizard?_ui=2&gotoStep=deploynow&id=' + copadoApp.data.dep.Id)
-                //change to popup
-            location.href = window.location.protocol + '//' + window.location.host + '/apex/deploymentWizard?_ui=2&gotoStep=deploynow&id=' + copadoApp.data.dep.Id;
+                //change to popup)
+            location.href = window.location.protocol + '//' + window.location.host + '/apex/deploymentWizard?_ui=2&gotoStep=deploynow&id=' + copadoApp.data.dep.Id+'&jobsManagerMatchingKey=' + encodeURIComponent(copadoApp.jobsManagerMatchingKey);
         }
 
     },
@@ -991,7 +989,7 @@ var copadoApp = {
         $new.find('input.js-step-name').val(step.Name);
         $new.find('span.js-step-name').html(step.Name);
         $new.find('.js-step-type').val(step[copadoApp.ns + 'Type__c']);
-        $new.find('.js-step-check').attr('checked', step[copadoApp.ns + 'CheckOnly__c']).hide();
+        $new.find('.js-step-check').prop('checked', step[copadoApp.ns + 'CheckOnly__c']).hide();
         $new.find('.js-col-actions').attr('data-stepid', step.Id);
         $new.find('.js-step-type').attr('data-stepid', step.Id);
 
@@ -1183,7 +1181,7 @@ var copadoApp = {
                     console.log('update ui ', copadoApp.data.dep[copadoApp.ns + 'Status__c'], copadoApp.data.dep[copadoApp.ns + 'Flag_Status__c']);
                     $copado('[id$=ofStatus]').html(copadoApp.data.dep[copadoApp.ns + 'Status__c']);
                     $copado('[id$=ofCompleted]').html(copadoApp.data.dep[copadoApp.ns + 'Completed__c'] + ' %');
-                    $copado('.js-status-icon').html(copadoApp.data.dep[copadoApp.ns + 'Flag_Status__c']);
+                    $copado('.js-status-icon').attr('src',copadoApp.data.dep[copadoApp.ns + 'Flag_Status__c']);
 
                     if (copadoApp.data.dep[copadoApp.ns + 'Status__c'].indexOf('Completed') === 0) {
                         copadoApp.enabledBtn('[id$=btnDeploy]', copadoLabels.DEPLOY);
@@ -1394,8 +1392,10 @@ var copadoApp = {
 
         // if deployment has a from org valid defined, preload the metadata for grid 
         // TODO: add logic of readonly to avoid 
-        me.data.dep[copadoApp.ns + 'From_Org__c'] &&
-            copadoGrid.preloadMetadata(me.data.dep[copadoApp.ns + 'From_Org__c']);
+        if(!rock.scalable) {
+            me.data.dep[copadoApp.ns + 'From_Org__c'] &&
+                copadoGrid.preloadMetadata(me.data.dep[copadoApp.ns + 'From_Org__c']);
+        }
 
         $copado(window).on('beforeunload', me.checkDirty);
     }
@@ -2122,7 +2122,6 @@ var copadoStep = {
     upsertSObjectStep: function(s, cb) {
 
         var step = new sforce.SObject(copadoApp.ns + "Step__c");
-
         step.Name = s.name;
         //step[copadoApp.ns+'Order__c'] = s.order;//$copado(rock.el(rock.stepUI.order)).val();
         step[copadoApp.ns + 'Type__c'] = s.type
@@ -2187,6 +2186,91 @@ var copadoStep = {
 
 };
 
+
+var metadataGrid2, getMetadataGrid2 = function(type) {
+        var conf = rock.config;
+        conf.gridMode = copadoStep.stepType;
+        conf.isScalable = rock.scalable && (copadoStep.stepType == 'MetaData' || copadoStep.stepType == 'Delete MetaData')
+        conf.data = conf.data || {};
+        conf.data.orgId = rock.orgId;
+        conf.server = {};
+        conf.server.metadataUrl = rock.config.metadata_url;
+        conf.attachmentName = 'MetaData';
+        console.info('buildGrid() start ', type, conf);
+
+        if(metadataGrid2 && metadataGrid2.conf) {
+            metadataGrid2.resetGrid(conf);
+        }else{
+            metadataGrid2 = new MetadataGrid2(conf);
+        }
+
+        metadataGrid2.loadSelectedMetaData = function(callbackFinished) {
+            var selectedMetadata = dw.u.getSavedStepData(copadoStep.stepType);
+            if( selectedMetadata === false ) {
+                console.debug('MetadataGrid2.loadSelectedMetaData(): no data for', copadoStep.stepType, 'rock.stepId=', rock.stepId);
+                if(callbackFinished)
+                    callbackFinished();
+                return;
+            }
+            setWithoutRebinding(this.selectedMetadata, selectedMetadata);
+            console.debug('MetadataGrid2.loadSelectedMetaData()', this.selectedMetadata.length);
+            if(callbackFinished)
+                callbackFinished();
+        };
+
+        /*
+        if(!conf.isScalable) {
+            var prevLoadMetadata = metadataGrid2.loadMetaData;
+            metadataGrid2.loadMetaData = function(callbackFinished) {
+                // Optimization: since the deployment page preloads the metadata, reuse it.
+
+                if(metadataGrid2.isMetadataGrid && copadoGrid.metaDataCache && copadoGrid.metaDataCache.length) {
+                    console.debug("getting the preloaded information...");
+                    metadataGrid2._setGridData(copadoGrid.metaDataCache);
+                    if(callbackFinished)
+                        callbackFinished();
+                    return;
+                }
+                // call the original loadMetaData funtion.
+                prevLoadMetadata.call(metadataGrid2, callbackFinished);
+            };
+        }
+        */
+
+        metadataGrid2.render(function() {
+            console.info("MetadataGrid2:init grid rendered");
+        // leave the datasource available for save
+            rock.datasource = metadataGrid2.datasource;
+
+            // NR: workaround, since deploymentstep.unlock() gets called, unlocking the screen almost right away
+            window.setTimeout(function() {
+                copadoApp.unlock();
+                metadataGrid2.loadData(function() {
+                    metadataGrid2.render();
+                    copadoApp.unlock();
+
+                    console.info("MetadataGrid2:init done", metadataGrid2.allMetaData_cachedDate, metadataGrid2.filterByType);
+                    rock.createCacheDeleteButton(metadataGrid2.allMetaData_cachedDate, metadataGrid2.filterByType);
+
+                    // listen to any change in the selection
+                    document.addEventListener("copadoMetadataGrid2Changed", function(e) {
+                        copadoStep.dirty = true;
+                    });
+
+                    // listen to any change in the selection
+                    document.addEventListener("copadoMetadataGrid2TypeChanged", function(e) {
+                        console.info("MetadataGrid2:type changed", metadataGrid2.allMetaData_cachedDate, metadataGrid2.filterByType);
+                        rock.createCacheDeleteButton(metadataGrid2.allMetaData_cachedDate, metadataGrid2.filterByType);
+                    });
+
+                });
+            }, 50);
+        });
+
+        console.info('buildGrid() end ', type);
+        return metadataGrid2;
+};
+
 /**
  * [copadoGrid complete controller for jqx-grid]
  * @type {Object}
@@ -2217,6 +2301,11 @@ var copadoGrid = {
 
     startGrid: function(type, metaOrgData) {
         if (copadoGrid.gridByType[type]) {
+            if(copadoStep.stepType == 'MetaData' || copadoStep.stepType == 'Delete MetaData') {
+                rock.datasource = metadataGrid2.datasource;
+                getMetadataGrid2(type);
+                return;
+            }
             copadoGrid.refreshGrid(type, metaOrgData)
         } else {
             copadoGrid.initGrid(type, metaOrgData);
@@ -2267,6 +2356,9 @@ var copadoGrid = {
 
     buildGrid: function(type, data) {
         console.log('buildGrid len', type, data.length);
+
+        if(copadoStep.stepType == 'MetaData' || copadoStep.stepType == 'Delete MetaData')
+            return getMetadataGrid2(type);
 
         copadoGrid.isActive = true;
 
@@ -2644,6 +2736,16 @@ var copadoGrid = {
 
         console.log('copado grid init ', copadoStep.stepType, copadoStep.stepId, 'force:', force);
 
+        if(copadoStep.stepType == 'MetaData' || copadoStep.stepType == 'Delete MetaData') {
+            console.log('initGrid: showing new grid');
+            $copado('#jqxgrid').hide();
+            $copado('#metadataGrid2').show();
+        }else{
+            console.log('initGrid: showing old grid');
+            $copado('#jqxgrid').show();
+            $copado('#metadataGrid2').hide();
+        }
+
         //check browser cache
         if (copadoStep.stepType == 'Users') {
             var data = copadoGrid.usersDataCache;
@@ -2664,6 +2766,18 @@ var copadoGrid = {
             copadoGrid.initCallBack([], {});
         } else {
             console.log('metadata NOT in browser cache')
+
+            if(copadoStep.stepType == 'MetaData' || copadoStep.stepType == 'Delete MetaData') {
+                if(metadataGrid2) {
+                    metadataGrid2.refreshCache(function() {
+                        copadoGrid.initCallBack([], {});
+                    });
+                }else{
+                    copadoGrid.initCallBack([], {});
+                }
+                return;
+            }
+
                 //start component
             dw.u.getCachedRemote({
                 url: copadoStep.getRemoteUrlByType(copadoStep.stepType),
@@ -3194,13 +3308,15 @@ var rock = rock || {};
 rock.stepType = copadoStep.stepType;
 rock.stepId = copadoStep.stepId;
 
-rock.createCacheDeleteButton = function(date) {
+rock.createCacheDeleteButton = function(date, metadataType) {
     try {
         if (!date) {
             $copado('[id*=removeCacheContainer]').hide();
         } else {
             var $btn = $copado('[id$=removeCache]');
-            $btn.html($btn.html().replace('__DATE__', date)).show();
+            rock.createCacheDeleteButton_message = rock.createCacheDeleteButton_message || $btn.html();
+            metadataType =  (metadataType?' for '+metadataType:'');
+            $btn.html(rock.createCacheDeleteButton_message.replace('__DATE__', date).replace('__METATYPE__', metadataType)).show();
             $copado('#removeCacheContainer').show();
         }
     } catch (e) {}
@@ -3345,7 +3461,6 @@ rock.upsertStep = function(cb) {
     //step[copadoApp.ns+'Type__c'] = copadoStep.stepType
     //step[copadoApp.ns+'Deployment__c'] = rock..deploymentId;
     //step[copadoApp.ns+'CheckOnly__c'] = //$copado(rock.el(rock.stepUI.checkOnly)).is(':checked') ? true : false;
-
     console.log('TODO checkonly & order');
 
     step.Id = rock.stepId;
@@ -4092,8 +4207,8 @@ var copadoCSStep = {
         }
         console.log('get objects remote, force:', force)
         dw.u.getCachedRemote({
-            url: rock.config.sobjects_url,
-            name: 'Data',
+            url: rock.config.sobjects_url + '&onlyCustomSettings=true',
+            name: 'Custom Settings',
             force: force,
             parentId: copadoStep.orgId,
             success: function(res, date) {
@@ -4379,7 +4494,7 @@ var copadoGitPromotionStep = {
             showfilterrow: true,
             filterable: true,
             theme: 'base',
-            editable: false,
+            editable: rock.EditGitPromotion == "true",
             selectionmode: 'none',
             enablebrowserselection: true,
             pageable: true,
@@ -4393,6 +4508,7 @@ var copadoGitPromotionStep = {
                 columntype: 'checkbox',
                 filtertype: 'bool',
                 datafield: 's',
+                editable: rock.EditGitPromotion == "true",
                 width: 60
             }, {
                 text: 'Commit Info.',
@@ -4419,6 +4535,22 @@ var copadoGitPromotionStep = {
                 copadoApp.unlock();
             }
         });
+        if(me && rock.EditGitPromotion == "true") {
+            $grid2.on('cellvaluechanged', function (event) {
+                var local = rock.datasource.localdata;
+                var t = $grid2.jqxGrid('getrowdata', event.args.rowindex);
+                console.log('Applying selection chages to the grid...',t);
+                if (event.args.datafield=='s' && t.s === true) {
+                    t.s = true;
+                    
+                }else if(event.args.datafield=='s' && t.s === false){
+                    t.s = false;
+                }
+                local[event.args.rowindex] = t;
+                $grid2.jqxGrid('refresh');
+                $grid2.jqxGrid('applyfilters');
+            });
+        }
     },
 
 
@@ -4656,7 +4788,7 @@ dw.qb.createCacheDeleteButton = function(date) {
         $copado('#qb-refresh').hide();
     } else {
         var $btn = $copado('#qb-refresh');
-        $btn.html($btn.html().replace('__DATE__', date)).show();
+        $btn.html($btn.html().replace('__DATE__', date).replace('__METATYPE__','')).show();
     }
 };
 

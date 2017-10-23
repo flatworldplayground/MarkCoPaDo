@@ -306,12 +306,10 @@ copado__SUM_Deployed__c / copado__Deployment_Jobs_Count__c,
         <fullName>copado__Flag_Status__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
-        <formula>IMAGE( 
-CASE( copado__Status__c, &quot;Completed Successfully&quot;, &quot;/img/samples/flag_green.gif&quot;, 
+        <formula>CASE( copado__Status__c, &quot;Completed Successfully&quot;, &quot;/img/samples/flag_green.gif&quot;, 
 &quot;In progress&quot;, &quot;/img/loading.gif&quot;, 
 &quot;Completed with Errors&quot;, &quot;/img/samples/flag_red.gif&quot;, 
-&quot;/s.gif&quot;), 
-&quot;&quot; )</formula>
+&quot;/s.gif&quot;)</formula>
         <label>Flag Status</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -472,6 +470,7 @@ CASE( copado__Status__c, &quot;Completed Successfully&quot;, &quot;/img/samples/
         <columns>copado__Completed__c</columns>
         <columns>copado__From_Org__c</columns>
         <columns>CREATED_DATE</columns>
+        <columns>copado__Promotion__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
         <language>en_US</language>

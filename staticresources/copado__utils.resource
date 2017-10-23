@@ -2,17 +2,17 @@ var Base64 = {
     _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
     _MINSIZEFORBTOA: 10485760, // minimum size to siwtch to BOTA/ATOB native functions ( 200x faster, but not unicode-friendly )
     encode: function(c) {
-      console.debug('Base64.encode.length', c.length, c.length > Base64._MINSIZEFORBTOA ? 'using btoa':'using unicode-safe');
-      
-      // NR: there is  issue in btoa/atob: https://developer.mozilla.org/en/docs/Web/API/WindowBase64/Base64_encoding_and_decoding
-      // the std solution is too slow, so the fallback is the original code.
-      // NR: btoa/atob sometimes fails, but silently, so, we get mangled characters... so, alternative: over 10mb of attachment, switch to native, otherwise, local
-      try{
-        if(c.length > Base64._MINSIZEFORBTOA)
-          return window.btoa(c);
-      }catch(e) {
-        console.debug('btoa did not work. Falling back to Base64.encode because', e);
-      }
+        console.debug('Base64.encode.length', c.length, c.length > Base64._MINSIZEFORBTOA ? 'using btoa' : 'using unicode-safe');
+
+        // NR: there is  issue in btoa/atob: https://developer.mozilla.org/en/docs/Web/API/WindowBase64/Base64_encoding_and_decoding
+        // the std solution is too slow, so the fallback is the original code.
+        // NR: btoa/atob sometimes fails, but silently, so, we get mangled characters... so, alternative: over 10mb of attachment, switch to native, otherwise, local
+        try {
+            if (c.length > Base64._MINSIZEFORBTOA)
+                return window.btoa(c);
+        } catch (e) {
+            console.debug('btoa did not work. Falling back to Base64.encode because', e);
+        }
 
         var a = "",
             d, b, f, g, h, e, j = 0;
@@ -20,17 +20,17 @@ var Base64 = {
         return a
     },
     decode: function(c) {
-      console.debug('Base64.decode.length', c.length, c.length > Base64._MINSIZEFORBTOA ? 'using atob':'using unicode-safe');
+        console.debug('Base64.decode.length', c.length, c.length > Base64._MINSIZEFORBTOA ? 'using atob' : 'using unicode-safe');
 
-      // NR: there is  issue in btoa/atob: https://developer.mozilla.org/en/docs/Web/API/WindowBase64/Base64_encoding_and_decoding
-      // the std solution is too slow, so the fallback is the original code.
-      // NR: btoa/atob sometimes fails, but silently, so, we get mangled characters... so, alternative: over 10mb of attachment, switch to native, otherwise, local
-      try{
-        if(c.length > Base64._MINSIZEFORBTOA)
-          return window.atob(c);
-      }catch(e) {
-        console.debug('atob did not work. Falling back to Base64.encode because', e);
-      }
+        // NR: there is  issue in btoa/atob: https://developer.mozilla.org/en/docs/Web/API/WindowBase64/Base64_encoding_and_decoding
+        // the std solution is too slow, so the fallback is the original code.
+        // NR: btoa/atob sometimes fails, but silently, so, we get mangled characters... so, alternative: over 10mb of attachment, switch to native, otherwise, local
+        try {
+            if (c.length > Base64._MINSIZEFORBTOA)
+                return window.atob(c);
+        } catch (e) {
+            console.debug('atob did not work. Falling back to Base64.encode because', e);
+        }
 
         var a = "",
             d, b, f, g, h, e = 0;
@@ -52,280 +52,322 @@ var Base64 = {
     }
 };
 
-     //IE helper
-     !window.console&&(window.console={log:function(){},error:function(){}});
-     
-     Date.fromISOString = (function(){
-        var tzoffset = (new Date).getTimezoneOffset();
-        function fastDateParse(y, m, d, h, i, s, ms){ // this -> tz
-            return new Date(y, m - 1, d, h || 0, +(i || 0) - this, s || 0, ms || 0);
-          }
-        
-          // result function
-          return function(isoDateString){
-            var tz = isoDateString.substr(10).match(/([\-\+])(\d{1,2}):?(\d{1,2})?/) || 0;
-            if (tz)
-              tz = tzoffset + (tz[1] == '-' ? -1 : 1) * (tz[3] != null ? +tz[2] * 60 + (+tz[3]) : +tz[2]);
-            return fastDateParse.apply(tz || 0, isoDateString.split(/\D/));
-          }
-        })();
-  
-     //namespace
-     var dw = dw || {};
-     dw.u = {
-         conf: {
-             retryLimit : 300,
-             retryUISelector: '#retry-label'
-         }
-     };
-        
-     dw.u.retry = function(url,cb,postData,avoidRetry, onError){
-          if(dw.u.getRemote.attempts < dw.u.conf.retryLimit){
-              dw.u.getRemote(url,cb,postData,avoidRetry, onError);
-              //ﬁdw.u.conf.retryUISelector).append('...');
-          }
-          else{
-              console.log('retry fail', dw.u.getRemote.attempts , dw.u.conf.retryLimit)
-              alert(copadoLabels.OOPS_SOMETHING_WENT_WRONG_GETTING_ORG_REMOTE_DATA);
-              return false;
-          }
-     };
-        
-     dw.u.getRemote = function(url,cb,postData,avoidRetry, onError){
-            
-            dw.u.getRemote.attempts++; 
-            console.log('get remote url',url);
-            console.log('copado aouth' ,"userId "+_temp_conf.userId,"orgId"+_temp_conf.orgId,"sessionId"+_temp_conf.sessionId,"token"+ _temp_conf.token)            
-            sforce.connection.remoteFunction({
-                url : url,
-                requestHeaders: {
-                        "Content-Type": "text/json",
-                        "userId": _temp_conf.userId,
-                        "orgId": _temp_conf.orgId,
-                        "sessionId": _temp_conf.sessionId,
-                        "token": _temp_conf.token
-                },
-                method: postData ? 'POST':"GET",
-                requestData: postData?postData:{},
-                onSuccess : function(res) {
-                    //check response
-                    try{
-                        !res&&console.log('No response');
-                        console.log('remote response', res);
+//IE helper
+!window.console && (window.console = {
+    log: function() {},
+    error: function() {}
+});
 
-                        var obj = $copado.parseJSON(res.replace(/(\r\n|\n|\r)/gm,' '));
-                        console.log('remote response', obj);
-                        
-                        //FIXME: understand why parse is giving an string
-                        if(typeof obj === 'string'){
-                            console.log('Parsed remote response was string',obj);
-                            obj = $copado.parseJSON(obj.replace(/(\r\n|\n|\r)/gm,' '));
-                        }
-                        
-                        
-                        if(obj.ok){
-                            console.log('remote started, retrying...', obj.ok);
-                            setTimeout(function(){
-                                dw.u.retry(url,cb,postData,avoidRetry, onError);
-                            },2000);
-                            return;
-                        }
-                        
-                        if(obj.error){
-                           console.error('Remote Error: ', obj.error);
-                           avoidRetry = true;
-                           alert(obj.error);
-                           throw obj.error;
-                        }
+Date.fromISOString = (function() {
+    var tzoffset = (new Date).getTimezoneOffset();
 
-                        if(obj.messages && obj.messages.length>0){
-                            var errorMsgs = obj.messages.join('\n');
-                            alert(errorMsgs);
-                            console.error('Error Messages: ', errorMsgs);
-                            throw errorMsgs;
-                        }
+    function fastDateParse(y, m, d, h, i, s, ms) { // this -> tz
+        return new Date(y, m - 1, d, h || 0, +(i || 0) - this, s || 0, ms || 0);
+    }
 
-                        cb && cb(obj);
-                        
-                    }catch(e){
-                        console.log('catch')
-                        console.log('remote error',e);
-                        if (avoidRetry) {
-                          try{
-                            $copado('#loading').hide();    
-                          }
-                          catch(e){}
-                          try{
-                            $copado('#jqxgrid').html(e);  
-                          }
-                          catch(e){}
-                        }
-                        onError && onError(e);
-                        !avoidRetry && setTimeout(function(){
-                             dw.u.retry(url,cb,postData,avoidRetry, onError);
-                        },2000);
-                        
-                    } 
-                },
-                onFailure : function(response) {
-                    console.log('onFailure',onError,response)
-                    if(onError){
-                        onError(response);
-                        return;
-                    }
-                    !avoidRetry && setTimeout(function(){
-                         dw.u.retry(url,cb,postData,avoidRetry, onError);
-                    },2000);
-                },
-                timeout: 250000
-            });
-        };
-       dw.u.getRemote.attempts = 0; 
-        
+    // result function
+    return function(isoDateString) {
+        var tz = isoDateString.substr(10).match(/([\-\+])(\d{1,2}):?(\d{1,2})?/) || 0;
+        if (tz)
+            tz = tzoffset + (tz[1] == '-' ? -1 : 1) * (tz[3] != null ? +tz[2] * 60 + (+tz[3]) : +tz[2]);
+        return fastDateParse.apply(tz || 0, isoDateString.split(/\D/));
+    }
+})();
 
-       dw.u.getAttach= function(parentId,name){
-        
-           var q = "Select Id, Body, LastModifiedDate, Name, ParentId From Attachment where Name='"+name+"' and parentId = '"+parentId+"' order by LastModifiedDate DESC limit 1",
-           result =  sforce.connection.query(q),
-           records = result.getArray("records");
-           return records;
-       };
+//namespace
+var dw = dw || {};
+dw.u = {
+    conf: {
+        retryLimit: 300,
+        retryUISelector: '#retry-label'
+    }
+};
 
-       dw.u.getAttachById= function(attachmentId){
-           var q = "Select Id, Body, LastModifiedDate, Name, ParentId From Attachment where Id='"+attachmentId+"'",
-           result =  sforce.connection.query(q),
-           records = result.getArray("records");
-           return records;
-       };
+dw.u.retry = function(url, cb, postData, avoidRetry, onError) {
+    if (dw.u.getRemote.attempts < dw.u.conf.retryLimit) {
+        dw.u.getRemote(url, cb, postData, avoidRetry, onError);
+        //ﬁdw.u.conf.retryUISelector).append('...');
+    } else {
+        console.log('retry fail', dw.u.getRemote.attempts, dw.u.conf.retryLimit)
+        alert(copadoLabels.OOPS_SOMETHING_WENT_WRONG_GETTING_ORG_REMOTE_DATA);
+        return false;
+    }
+};
 
-      dw.u.getDecodedAttach = function(parentId,name){
-        var a = dw.u.getAttach(parentId,name);
-        if(!a.length)return null;
-        a.Body = Base64.decode(a[0].Body);
-        return a;
-      };
+dw.u.getRemote = function(url, cb, postData, avoidRetry, onError, requestType) {
+    if(Copado_Licenses.hasMultiLicense && !(Copado_Licenses.hasCopado ||Copado_Licenses.hasCCM ||Copado_Licenses.hasCST) ) {
+        var errorMsgs = 'Your current license does not allow performing this action.';
+        alert(errorMsgs);
+        return;
+    }
 
-       
-       //upsert
-       dw.u.upsertAttach = function(parentId,name, body, alreadyCheck){
-            
-            console.log('upsertAttach',parentId, name, alreadyCheck);
-            var Id = false;
-            if(!alreadyCheck){
+    dw.u.getRemote.attempts++;
+    sforce.connection.remoteFunction({
+        url: url,
+        requestHeaders: {
+            "Content-Type": "text/json",
+            "userId": _temp_conf.userId,
+            "orgId": _temp_conf.orgId,
+            "sessionId": _temp_conf.sessionId,
+            "token": _temp_conf.token
+        },
+        method: postData ? 'POST' : "GET",
+        requestData: postData ? postData : {},
+        onSuccess: function(res) {
+            //check response
+            try {
+                !res && console.log('No response');
 
-                var attach = dw.u.getAttach(parentId,name);
-                if(attach.length){
-                    Id = attach[0].Id;
+
+                var obj = $copado.parseJSON(res.replace(/(\r\n|\n|\r)/gm, ' '));
+
+
+                //FIXME: understand why parse is giving an string
+                if (typeof obj === 'string') {
+
+                    obj = $copado.parseJSON(obj.replace(/(\r\n|\n|\r)/gm, ' '));
                 }
+
+
+                if (obj.ok) {
+
+                    setTimeout(function() {
+                        dw.u.retry(url, cb, postData, avoidRetry, onError);
+                    }, 2000);
+                    return;
+                }
+
+                if (obj.error) {
+                    console.error('Remote Error: ', obj.error);
+                    avoidRetry = true;
+                    alert(obj.error);
+                    throw obj.error;
+                }
+
+                if (obj.messages && obj.messages.length > 0) {
+                    var errorMsgs = obj.messages.join('\n');
+                    alert(errorMsgs);
+                    console.error('Error Messages: ', errorMsgs);
+                    throw errorMsgs;
+                }
+
+                cb && cb(obj);
+
+            } catch (e) {
+
+                console.log('remote error', e);
+                if (avoidRetry) {
+                    try {
+                        $copado('#loading').hide();
+                    } catch (e) {}
+                    try {
+                        $copado('#jqxgrid').html(e);
+                    } catch (e) {}
+                }
+                onError && onError(e);
+                !avoidRetry && setTimeout(function() {
+                    dw.u.retry(url, cb, postData, avoidRetry, onError);
+                }, 2000);
+
+            }
+        },
+        onFailure: function(response) {
+            console.log('onFailure', onError, response)
+            if (onError) {
+                onError(response);
+                return;
+            }!avoidRetry && setTimeout(function() {
+                dw.u.retry(url, cb, postData, avoidRetry, onError);
+            }, 2000);
+        },
+        timeout: 250000
+    });
+};
+dw.u.getRemote.attempts = 0;
+
+dw.u.deleteAttach = function(parentId, name) {
+    console.info('deleting attachments from '+parentId+'...');
+    var result = sforce.connection.query("Select Id From Attachment where Name='" + name + "' and parentId = '" + parentId + "'");
+    var rv = {};
+    if(result.size > 0){
+        try{
+            var records = result.getArray("records");            
+            var idsForDeletion = [];
+            for(var i=0; i<records.length; i++){
+                idsForDeletion.push(records[i].Id);                
+            }
+            var delRes = sforce.connection.deleteIds(idsForDeletion);
+
+            for(var i = 0; i<delRes.length; i++){
                 
-            }   
-            var att = new sforce.SObject("Attachment");
-            att.parentId = parentId;
-            att.name = name;
-            att.body = Base64.encode(body);
-            
-            if(Id){att.Id = Id;}
-           
-            var result = sforce.connection.upsert("Id",[att]); 
-    
-            
-       };
-       
-       //this function try to recover the data from cached attach
-       //if is not cached it get from remote source and save it in attach
-       dw.u.getCachedRemote = function(opt){
-           
-           /*
-           opt sample
-           { 
-               url: remoteUrl,
-               parentId: ':)',
-               name: 'Metadata' ,
-               postData:data
-               success:function(){},
-               error:function(){},
-               
-           };*/
-           
-           var attach = dw.u.getAttach(opt.parentId,opt.name);
-            if(opt.force || attach.length !=1){
-
-                //get remote and save
-                dw.u.getRemote.attempts = 0;
-                
-                 dw.u.getRemote(opt.url,function(res){
-                     console.log('getRemote ok',res);
-
-                     //save as attach
-                     dw.u.upsertAttach(opt.parentId,opt.name,JSON.stringify(res), !opt.force);
-                     opt.success(res,0);
-                 }, 
-                 opt.postData?opt.postData:null
-                 );
-            
-            }else{
-                try{
-                    //decode the attach body
-                    var res = Base64.decode(attach[0].Body);
-
-                    
-                    //format date
-                    var date = Date.fromISOString(attach[0].LastModifiedDate);
-                    
-                    //parse json
-                    opt.success($copado.parseJSON(res),date.toLocaleString());
-                             
-                }catch(e){
-                    //console.log(Base64.decode(attach[0].Body));
-                    console.error('Exception on saved data:',e);
-                    opt.error();
-                    throw e;
+                if(delRes[i].success == "false"){                    
+                    throw delRes[i].errors.message;
+                    break;
                 }
             }
-       
-       }; 
-       
-    dw.u.getSavedStepData = function(type, isNotJSON){
-         if(!rock.stepId)return false;
-         return dw.u.getSavedData(rock.stepId, type, isNotJSON);
-    };
+            rv.success = true;
+            rv.id = parentId;
+            return rv;
+        }catch(e){
+            rv.success = false;
+            rv.id = parentId;
+            rv.message = 'Exception while deleting metadata attachment : '+e;
+            console.warn('Exception while deleting metadata attachment : '+e);
+            return rv;
+        }
+    }else{
+        rv.success = false;
+        rv.id = parentId;
+        rv.message = 'No attachment found to delete';
+        console.warn('no attachment found');
+        return rv;
+    }
+    
+}
+
+dw.u.getAttach = function(parentId, name) {
+
+    var q = "Select Id, Body, LastModifiedDate, Name, ParentId From Attachment where Name='" + name + "' and parentId = '" + parentId + "' order by LastModifiedDate DESC limit 1",
+        result = sforce.connection.query(q),
+        records = result.getArray("records");
+    return records;
+};
+
+dw.u.getAttachById = function(attachmentId) {
+    var q = "Select Id, Body, LastModifiedDate, Name, ParentId From Attachment where Id='" + attachmentId + "'",
+        result = sforce.connection.query(q),
+        records = result.getArray("records");
+    return records;
+};
+
+dw.u.getDecodedAttach = function(parentId, name) {
+    var a = dw.u.getAttach(parentId, name);
+    if (!a.length) return null;
+    a.Body = Base64.decode(a[0].Body);
+    return a;
+};
 
 
-    dw.u.getSavedData = function(id, type, isNotJSON){
-        var attach = dw.u.getAttach(id ,type);
-        if(attach.length >0){
-          try{
+//upsert
+dw.u.upsertAttach = function(parentId, name, body, alreadyCheck) {
+
+
+    var Id = false;
+    if (!alreadyCheck) {
+
+        var attach = dw.u.getAttach(parentId, name);
+        if (attach.length) {
+            Id = attach[0].Id;
+        }
+
+    }
+    var att = new sforce.SObject("Attachment");
+    att.parentId = parentId;
+    att.name = name;
+    att.body = Base64.encode(body);
+
+    if (Id) {
+        att.Id = Id;
+    }
+
+    var result = sforce.connection.upsert("Id", [att]);
+
+
+};
+
+//this function try to recover the data from cached attach
+//if is not cached it get from remote source and save it in attach
+dw.u.getCachedRemote = function(opt) {
+    /*
+    opt sample
+    { 
+        url: remoteUrl,
+        parentId: ':)',
+        name: 'Metadata' ,
+        postData:data
+        success:function(){},
+        error:function(){},
+        
+    };*/
+
+    var attach = dw.u.getAttach(opt.parentId, opt.name);
+    if (opt.force || attach.length != 1) {
+
+        //get remote and save
+        dw.u.getRemote.attempts = 0;
+
+        dw.u.getRemote(opt.url, function(res) {
+                console.log('getRemote ok', res);
+
+                //save as attach
+                dw.u.upsertAttach(opt.parentId, opt.name, JSON.stringify(res), !opt.force);
+                opt.success(res, 0);
+            },
+            opt.postData ? opt.postData : null
+        );
+
+    } else {
+        // try{
+        //decode the attach body
+        var res = Base64.decode(attach[0].Body);
+
+
+        //format date
+        var date = Date.fromISOString(attach[0].LastModifiedDate);
+
+        //parse json
+        opt.success($copado.parseJSON(res), date.toLocaleString());
+
+        /*}catch(e){
+            //console.log(Base64.decode(attach[0].Body));
+            console.error('Exception on saved data:',e);
+            opt.error();
+            throw e;
+        }*/
+    }
+
+};
+
+dw.u.getSavedStepData = function(type, isNotJSON) {
+    if (!rock.stepId) return false;
+    return dw.u.getSavedData(rock.stepId, type, isNotJSON);
+};
+
+
+dw.u.getSavedData = function(id, type, isNotJSON) {
+    var attach = dw.u.getAttach(id, type);
+    if (attach.length > 0) {
+        try {
             //decode the attach body
             var res = Base64.decode(attach[0].Body);
             //parse json
             return isNotJSON ? res : $copado.parseJSON(res);
-                     
-           }catch(e){
-            console.log('Exception on saved data:',e);
-           }
+
+        } catch (e) {
+            console.log('Exception on saved data:', e);
         }
-        return false;  
-    };
-
-    function reformatMilliseconds(milliseconds){
-        console.log('Reformatting milliseconds...', milliseconds);
-
-        var d = parseInt(milliseconds) / 1000;
-        x = d
-        seconds = x % 60
-        x /= 60
-        minutes = x % 60
-        x /= 60
-        hours = x % 24
-        x /= 24
-        days = x
-
-        var output = (Math.floor(hours)>0)?Math.floor(hours)+' '+copadoLabels.HOURS+' ':'';
-        output += (Math.floor(minutes)>0)?Math.floor(minutes)+' '+copadoLabels.MINUTES+' ':'';
-        output += (Math.floor(seconds)>0)?Math.floor(seconds)+' '+copadoLabels.SECONDS+' ':'';
-        output += (milliseconds>0 && milliseconds<1000)?milliseconds+' '+copadoLabels.MILLISECONDS:'';
-        return output;
     }
+    return false;
+};
+
+function reformatMilliseconds(milliseconds) {
+
+    var d = parseInt(milliseconds) / 1000;
+    x = d
+    seconds = x % 60
+    x /= 60
+    minutes = x % 60
+    x /= 60
+    hours = x % 24
+    x /= 24
+    days = x
+
+    var output = (Math.floor(hours) > 0) ? Math.floor(hours) + ' ' + copadoLabels.HOURS + ' ' : '';
+    output += (Math.floor(minutes) > 0) ? Math.floor(minutes) + ' ' + copadoLabels.MINUTES + ' ' : '';
+    output += (Math.floor(seconds) > 0) ? Math.floor(seconds) + ' ' + copadoLabels.SECONDS + ' ' : '';
+    output += (milliseconds > 0 && milliseconds < 1000) ? milliseconds + ' ' + copadoLabels.MILLISECONDS : '';
+    return output;
+}
 
 /*************************************************
 Generic Grid Helper
@@ -337,89 +379,96 @@ var coGridHelper = {
      * @param  {[type]} dataStep    [description]
      * @return {[type]}             [description]
      */
-    mergeSavedData : function(metaOrgData,dataStep){
+    mergeSavedData: function(metaOrgData, dataStep) {
 
-      var len = dataStep.length;
-                           
-      while(len--){
-          if(typeof dataStep[len] !== 'object'){
-              delete dataStep[len];
-          }else{
-              dataStep[len].s =true;
-          }
-      }
+        var len = dataStep.length;
 
-      var len2 = dataStep.length;
-      for(var i = 0; i < len2 ; i++){
-          var el = dataStep[i];
+        while (len--) {
+            if (typeof dataStep[len] !== 'object') {
+                delete dataStep[len];
+            } else {
+                dataStep[len].s = true;
+            }
+        }
 
-          var index = coGridHelper.getIndexByNT(metaOrgData,el.n,(el.t||el.ns));
-          if(index > -1){
-              metaOrgData[index].s = true;
-          }else{
-              if(typeof(window._errNotFoundShown) == 'undefined' ){
-                  window._errNotFoundShown = true;
-                  alert(copadoLabels.missing_element_msg+(el.t||el.ns)+' - '+el.n);
-              }
-          }
-      }
+        var len2 = dataStep.length;
+        for (var i = 0; i < len2; i++) {
+            var el = dataStep[i];
 
-      return metaOrgData;
+            var index = coGridHelper.getIndexByNT(metaOrgData, el.n, (el.t || el.ns));
+            if (index > -1) {
+                metaOrgData[index].s = true;
+            } else {
+                if (typeof(window._errNotFoundShown) == 'undefined') {
+                    window._errNotFoundShown = true;
+                    alert(copadoLabels.missing_element_msg + (el.t || el.ns) + ' - ' + el.n);
+                }
+            }
+        }
+
+        return metaOrgData;
     },
 
     /**
      * get selected items from the datasource
      * @return {[type]} [description]
      */
-    getSelectedObj : function(){
+    getSelectedObj: function() {
         // NR: when there is no coGridHelper (because it is not a partial selection), we return empty array
-        if(!coGridHelper.datasource)
-          return [];
-        var data = coGridHelper.datasource.localdata, 
-        len = data.length;
-        
+        if (!coGridHelper.datasource)
+            return [];
+        var data = coGridHelper.datasource.localdata,
+            len = data.length;
+
         coGridHelper._selectedNames = [];
-        
-        while(len--){
-			var o = {n:data[len].n,s:true,d:data[len].d,b:data[len].b,cd:data[len].cd,cb:data[len].cb};
+
+        while (len--) {
+            var o = {
+                n: data[len].n,
+                s: true,
+                d: data[len].d,
+                b: data[len].b,
+                cd: data[len].cd,
+                cb: data[len].cb
+            };
 
             if (typeof data[len].r != 'undefined') {
-				o.r = data[len].r;
-			}
-            if(typeof data[len].ns != 'undefined'){
-                o.ns = data[len].ns;
-            }else{
-                o.t = data[len].t ;
+                o.r = data[len].r;
             }
-            
+            if (typeof data[len].ns != 'undefined') {
+                o.ns = data[len].ns;
+            } else {
+                o.t = data[len].t;
+            }
+
             data[len].s && coGridHelper._selectedNames.push(o);
         }
         return coGridHelper._selectedNames;
-     },
-         
-     //selected "Names"
-     _selectedNames: [],
+    },
 
-     /**
-      * helper to find index items by name, namespace and type
-      * @param  {[type]} arr [description]
-      * @param  {[type]} n   [description]
-      * @param  {[type]} t   [description]
-      * @return {[type]}     [description]
-      */
-     getIndexByNT: function(arr, n,t){
+    //selected "Names"
+    _selectedNames: [],
 
-        var initialIndex =  0 ;// todo improve index change >> this.initialIndex || 0,
+    /**
+     * helper to find index items by name, namespace and type
+     * @param  {[type]} arr [description]
+     * @param  {[type]} n   [description]
+     * @param  {[type]} t   [description]
+     * @return {[type]}     [description]
+     */
+    getIndexByNT: function(arr, n, t) {
+
+        var initialIndex = 0; // todo improve index change >> this.initialIndex || 0,
         len = arr.length;
-         
-        for(initialIndex; initialIndex < len ;initialIndex++ ){
+
+        for (initialIndex; initialIndex < len; initialIndex++) {
             var el = arr[initialIndex];
-            try{ 
-            if( el.n === n && (el.t === t || el.ns === t)){
-                this.initialIndex = initialIndex;
-                return initialIndex;
-            }
-            }catch(e){
+            try {
+                if (el.n === n && (el.t === t || el.ns === t)) {
+                    this.initialIndex = initialIndex;
+                    return initialIndex;
+                }
+            } catch (e) {
                 console.error(e);
                 return -1;
             }
@@ -436,24 +485,24 @@ var coGridHelper = {
      * @param  {[type]} callcack             
      * @return {[type]}                      false
      */
-    saveSelected : function(id, type, additionalValidation, allowEmpty , callback){
+    saveSelected: function(id, type, additionalValidation, allowEmpty, callback) {
 
         var me = coGridHelper;
         //validations
         //check global selected items
         me.getSelectedObj();
-        if(!allowEmpty && !me._selectedNames.length){
+        if (!allowEmpty && !me._selectedNames.length) {
             //check if copadoApp showmessage is active
-            if(copadoApp.showMessage){
+            if (copadoApp.showMessage) {
                 copadoApp.showMessage('ERROR', copadoLabels.SPECIFY_AT_LEAST_ONE_ITEM_TO_DEPLOY, 0);
-            }else{
+            } else {
                 alert(copadoLabels.SPECIFY_AT_LEAST_ONE_ITEM_TO_DEPLOY);
             }
             return false;
         }
 
-        var valid = !additionalValidation? true : additionalValidation(me._selectedNames);
-        
+        var valid = !additionalValidation ? true : additionalValidation(me._selectedNames);
+
         valid && me.remoteSaveMeta(id, me._selectedNames, type, callback);
 
         return false;
@@ -467,9 +516,8 @@ var coGridHelper = {
      * @param  {[type]} callcack function on callback
      * @return {[type]}          void
      */
-    remoteSaveMeta : function(id, items, type, callback){
-         dw.u.upsertAttach(id, type , JSON.stringify(items));
-         callback && callback();
+    remoteSaveMeta: function(id, items, type, callback) {
+        dw.u.upsertAttach(id, type, JSON.stringify(items));
+        callback && callback();
     }
 };
-
