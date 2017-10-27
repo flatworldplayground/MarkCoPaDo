@@ -94,11 +94,22 @@
     </actionOverrides>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
     <compactLayouts>
-        <fullName>test_Compact_layout_6207</fullName>
+        <fullName>CaseTest</fullName>
         <fields>Name</fields>
-        <fields>Sex__c</fields>
+        <fields>Title</fields>
+        <fields>AccountId</fields>
+        <fields>Phone</fields>
         <fields>Email</fields>
-        <label>test Compact layout 6207</label>
+        <fields>MobilePhone</fields>
+        <fields>OwnerId</fields>
+        <label>CaseTest</label>
+    </compactLayouts>
+    <compactLayouts>
+        <fullName>Test6Test6207207</fullName>
+        <fields>Name</fields>
+        <fields>Title</fields>
+        <fields>Sex__c</fields>
+        <label>Test6207</label>
     </compactLayouts>
     <enableFeeds>true</enableFeeds>
     <enableHistory>false</enableHistory>
@@ -106,6 +117,14 @@
         <fullName>AccountId</fullName>
         <trackFeedHistory>true</trackFeedHistory>
         <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Area51__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <label>Area51</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>AssistantName</fullName>
@@ -130,8 +149,30 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Bukir_Ti__c</fullName>
+        <externalId>false</externalId>
+        <label>Bukir Ti</label>
+        <required>true</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Booking_Type</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>CleanStatus</fullName>
         <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>DeleteMetadataTest__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>DeleteMetadataTest</description>
+        <externalId>false</externalId>
+        <inlineHelpText>DeleteMetadataTest</inlineHelpText>
+        <label>DeleteMetadataTest</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Department</fullName>
@@ -360,4 +401,24 @@
         <searchResultsAdditionalFields>CORE.USERS.ALIAS</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
+    <webLinks>
+        <fullName>Test_Button</fullName>
+        <availability>online</availability>
+        <description>for testiing</description>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Test Button</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>#</url>
+    </webLinks>
 </CustomObject>

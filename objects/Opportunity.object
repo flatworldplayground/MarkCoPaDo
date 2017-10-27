@@ -186,6 +186,41 @@
         <type>Picklist</type>
     </fields>
     <fields>
+        <fullName>Test__c</fullName>
+        <externalId>false</externalId>
+        <label>Test5945</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>fog1</fullName>
+                    <default>false</default>
+                    <label>fog1</label>
+                </value>
+                <value>
+                    <fullName>fog2</fullName>
+                    <default>false</default>
+                    <label>fog2</label>
+                </value>
+                <value>
+                    <fullName>fog3</fullName>
+                    <default>false</default>
+                    <label>fog3</label>
+                </value>
+                <value>
+                    <fullName>fog4</fullName>
+                    <default>false</default>
+                    <label>fog4</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>TotalOpportunityQuantity</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackTrending>false</trackTrending>

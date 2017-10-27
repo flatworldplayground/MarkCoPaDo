@@ -80,6 +80,17 @@
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>ChkBoxTST__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>ChkinZE BOX</description>
+        <externalId>false</externalId>
+        <label>ChkBox</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>ClosedDate</fullName>
         <trackTrending>false</trackTrending>
     </fields>
@@ -184,6 +195,51 @@
                     <label>Yes</label>
                 </value>
             </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Primary_Category__c</fullName>
+        <externalId>false</externalId>
+        <label>Primary Category</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <controllingField>Type</controllingField>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Bar</fullName>
+                    <default>false</default>
+                    <label>Bar</label>
+                </value>
+                <value>
+                    <fullName>Beach</fullName>
+                    <default>false</default>
+                    <label>Beach</label>
+                </value>
+            </valueSetDefinition>
+            <valueSettings>
+                <controllingFieldValue>Electrical</controllingFieldValue>
+                <controllingFieldValue>Electronic</controllingFieldValue>
+                <controllingFieldValue>Mechanical</controllingFieldValue>
+                <controllingFieldValue>Other</controllingFieldValue>
+                <controllingFieldValue>Structural</controllingFieldValue>
+                <controllingFieldValue>Customer Content Feedback</controllingFieldValue>
+                <valueName>Bar</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Electrical</controllingFieldValue>
+                <controllingFieldValue>Electronic</controllingFieldValue>
+                <controllingFieldValue>Mechanical</controllingFieldValue>
+                <controllingFieldValue>Other</controllingFieldValue>
+                <controllingFieldValue>Structural</controllingFieldValue>
+                <controllingFieldValue>Customer Content Feedback</controllingFieldValue>
+                <valueName>Beach</valueName>
+            </valueSettings>
         </valueSet>
     </fields>
     <fields>
@@ -322,11 +378,89 @@
         <trackTrending>false</trackTrending>
     </fields>
     <fields>
+        <fullName>TestCheckBox__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Test ch bx deployment</description>
+        <externalId>false</externalId>
+        <label>TestCheckBox</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>TestPick__c</fullName>
+        <externalId>false</externalId>
+        <label>TestPick</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Test1</fullName>
+                    <default>false</default>
+                    <label>Test1</label>
+                </value>
+                <value>
+                    <fullName>Test2</fullName>
+                    <default>false</default>
+                    <label>Test2</label>
+                </value>
+                <value>
+                    <fullName>Test3</fullName>
+                    <default>false</default>
+                    <label>Test3</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Type</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <trackHistory>true</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Update_Case_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Update Case Status</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>New</fullName>
+                    <default>true</default>
+                    <label>New</label>
+                </value>
+                <value>
+                    <fullName>On Hold</fullName>
+                    <default>false</default>
+                    <label>On Hold</label>
+                </value>
+                <value>
+                    <fullName>In progress</fullName>
+                    <default>false</default>
+                    <label>In progress</label>
+                </value>
+                <value>
+                    <fullName>Awaiting Customer Feedback</fullName>
+                    <default>false</default>
+                    <label>Awaiting Customer Feedback</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Validation__c</fullName>
@@ -337,6 +471,16 @@
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>X2nd_Phone__c</fullName>
+        <externalId>false</externalId>
+        <label>2nd Phone</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Phone</type>
     </fields>
     <fields>
         <fullName>call_2nd_phone_number__c</fullName>
@@ -405,6 +549,7 @@
         <lookupPhoneDialogsAdditionalFields>NAME</lookupPhoneDialogsAdditionalFields>
         <lookupPhoneDialogsAdditionalFields>ACCOUNT.NAME</lookupPhoneDialogsAdditionalFields>
         <lookupPhoneDialogsAdditionalFields>CASES.STATUS</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>00N0Y00000IuuB4</lookupPhoneDialogsAdditionalFields>
         <searchResultsAdditionalFields>CASES.CASE_NUMBER</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>CASES.SUBJECT</searchResultsAdditionalFields>
         <searchResultsAdditionalFields>CASES.STATUS</searchResultsAdditionalFields>
