@@ -153,6 +153,15 @@
         <type>Number</type>
         <unique>false</unique>
     </fields>
+    <fields>
+        <fullName>Text__c</fullName>
+        <externalId>false</externalId>
+        <label>Text</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
     <listViews>
         <fullName>AllActivities</fullName>
         <filterScope>Team</filterScope>

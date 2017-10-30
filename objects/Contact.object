@@ -338,6 +338,17 @@
         <type>Text</type>
         <unique>false</unique>
     </fields>
+    <fields>
+        <fullName>test6729__c</fullName>
+        <description>haha</description>
+        <externalId>false</externalId>
+        <inlineHelpText>haha</inlineHelpText>
+        <label>test6729</label>
+        <length>32768</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
     <listViews>
         <fullName>AllContacts</fullName>
         <filterScope>Everything</filterScope>
