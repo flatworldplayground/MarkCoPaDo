@@ -520,6 +520,15 @@
         <label>All Open Cases</label>
     </listViews>
     <listViews>
+        <fullName>High_Priority_Cases_Case</fullName>
+        <filterScope>Queue</filterScope>
+        <label>High-Priority Cases</label>
+        <queue>High_Priority_Cases</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
         <fullName>MyCases</fullName>
         <filterScope>Mine</filterScope>
         <label>My Cases</label>

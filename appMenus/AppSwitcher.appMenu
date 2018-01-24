@@ -52,4 +52,8 @@
         <name>standard__LightningSales</name>
         <type>CustomApplication</type>
     </appMenuItems>
+    <appMenuItems>
+        <name>Omni_Channel_Console</name>
+        <type>CustomApplication</type>
+    </appMenuItems>
 </AppMenu>
