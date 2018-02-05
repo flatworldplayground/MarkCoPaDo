@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Air Curl Bulbits</fullName>
+        <default>false</default>
+        <label>Air Curl Bulbits</label>
+    </customValue>
+    <customValue>
+        <fullName>Fire Lord Bulbits</fullName>
+        <default>false</default>
+        <label>Fire Lord Bulbits</label>
+    </customValue>
+    <customValue>
+        <fullName>Water Mage Bulbits</fullName>
+        <default>false</default>
+        <label>Water Mage Bulbits</label>
+    </customValue>
+    <description>for booking type</description>
+    <masterLabel>Booking Type</masterLabel>
+    <sorted>true</sorted>
+</GlobalValueSet>

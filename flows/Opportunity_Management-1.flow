@@ -328,7 +328,7 @@
             <label>Previously Met - Prev</label>
         </rules>
     </decisions>
-    <description>If a high-value opportunity is closed and won, create a draft contract and a follow-up task for the account owner.</description>
+    <description>If a high-value opportunity is closed and won, create a draft contract and a follow-up task for the account owner</description>
     <interviewLabel>Opportunity_Management-1_InterviewLabel</interviewLabel>
     <label>Opportunity Management</label>
     <processMetadataValues>

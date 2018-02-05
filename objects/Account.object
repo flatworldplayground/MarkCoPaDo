@@ -65,6 +65,13 @@
         <type>Default</type>
     </actionOverrides>
     <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>Test_6207</fullName>
+        <fields>AccountNumber</fields>
+        <fields>Phone</fields>
+        <fields>BillingAddress</fields>
+        <label>Test_6207</label>
+    </compactLayouts>
     <enableFeeds>true</enableFeeds>
     <enableHistory>false</enableHistory>
     <fields>
@@ -100,6 +107,35 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>Anayaleyt__c</fullName>
+        <externalId>false</externalId>
+        <label>Anayaleyt5945</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Kenji</fullName>
+                    <default>false</default>
+                    <label>Kenji</label>
+                </value>
+                <value>
+                    <fullName>Grayback</fullName>
+                    <default>false</default>
+                    <label>Grayback</label>
+                </value>
+                <value>
+                    <fullName>Yssil</fullName>
+                    <default>false</default>
+                    <label>Yssil</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>AnnualRevenue</fullName>
         <trackFeedHistory>false</trackFeedHistory>
     </fields>
@@ -122,19 +158,24 @@
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
-                    <fullName>Taas</fullName>
+                    <fullName>So Damn High</fullName>
                     <default>false</default>
-                    <label>Taas</label>
+                    <label>So Damn High</label>
                 </value>
                 <value>
-                    <fullName>Medium</fullName>
+                    <fullName>High</fullName>
                     <default>false</default>
-                    <label>Medium</label>
+                    <label>High</label>
                 </value>
                 <value>
                     <fullName>Low</fullName>
                     <default>false</default>
                     <label>Low</label>
+                </value>
+                <value>
+                    <fullName>Medium</fullName>
+                    <default>false</default>
+                    <label>Medium</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -224,6 +265,16 @@
         <trackFeedHistory>false</trackFeedHistory>
     </fields>
     <fields>
+        <fullName>Premium_Account__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Checks if Account has Premium Priviledges</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Checks if Account has Premium Priviledges</inlineHelpText>
+        <label>Premium Account</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Rating</fullName>
         <trackFeedHistory>false</trackFeedHistory>
         <type>Picklist</type>
@@ -294,6 +345,16 @@
     <fields>
         <fullName>Site</fullName>
         <trackFeedHistory>false</trackFeedHistory>
+    </fields>
+    <fields>
+        <fullName>Test6280__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Testing
+Test</description>
+        <externalId>false</externalId>
+        <label>Test6280</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>TickerSymbol</fullName>

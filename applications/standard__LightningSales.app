@@ -6,7 +6,7 @@
     <label>Sales</label>
     <navType>Standard</navType>
     <tab>standard-home</tab>
-    <tab>standard-Feed</tab>
+    <tab>SampleApp</tab>
     <tab>standard-Opportunity</tab>
     <tab>standard-Lead</tab>
     <tab>standard-Task</tab>
