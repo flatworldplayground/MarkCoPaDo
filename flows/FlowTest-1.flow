@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>FlowTest</description>
+    <interviewLabel>FlowTest {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>FlowTest</label>
+    <processType>Flow</processType>
+    <steps>
+        <description>TestFLOW</description>
+        <name>TestFLOW</name>
+        <label>Test</label>
+        <locationX>128</locationX>
+        <locationY>93</locationY>
+    </steps>
+</Flow>

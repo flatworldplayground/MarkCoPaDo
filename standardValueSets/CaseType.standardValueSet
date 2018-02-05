@@ -26,4 +26,9 @@
         <default>false</default>
         <label>Other</label>
     </standardValue>
+    <standardValue>
+        <fullName>Customer Content Feedback</fullName>
+        <default>false</default>
+        <label>Customer Content Feedback</label>
+    </standardValue>
 </StandardValueSet>

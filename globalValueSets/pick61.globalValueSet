@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>water</fullName>
+        <default>false</default>
+        <label>water</label>
+    </customValue>
+    <customValue>
+        <fullName>candy</fullName>
+        <default>false</default>
+        <label>candy</label>
+    </customValue>
+    <customValue>
+        <fullName>ice</fullName>
+        <default>false</default>
+        <label>ice</label>
+    </customValue>
+    <description>6192</description>
+    <masterLabel>pick6192</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>
