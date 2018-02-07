@@ -30,6 +30,10 @@
                 <behavior>Edit</behavior>
                 <field>Booker_T__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ForCase7644__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

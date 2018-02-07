@@ -117,6 +117,29 @@
         <active>true</active>
         <label>Customer Meeting</label>
         <picklistValues>
+            <picklist>ForCase7644__c</picklist>
+            <values>
+                <fullName>Cinco</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cuatro</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dos</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tres</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Uno</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Subject</picklist>
             <values>
                 <fullName>Call</fullName>
@@ -163,6 +186,29 @@
         <fullName>JuiceDrink</fullName>
         <active>true</active>
         <label>JuiceDrink</label>
+        <picklistValues>
+            <picklist>ForCase7644__c</picklist>
+            <values>
+                <fullName>Cinco</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cuatro</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dos</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tres</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Uno</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Subject</picklist>
             <values>
@@ -211,6 +257,29 @@
         <active>true</active>
         <label>machine</label>
         <picklistValues>
+            <picklist>ForCase7644__c</picklist>
+            <values>
+                <fullName>Cinco</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cuatro</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dos</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tres</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Uno</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Subject</picklist>
             <values>
                 <fullName>Call</fullName>
@@ -257,6 +326,29 @@
         <fullName>shrink_c</fullName>
         <active>true</active>
         <label>shrink_c</label>
+        <picklistValues>
+            <picklist>ForCase7644__c</picklist>
+            <values>
+                <fullName>Cinco</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cuatro</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dos</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tres</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Uno</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>Subject</picklist>
             <values>

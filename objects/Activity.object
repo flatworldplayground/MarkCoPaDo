@@ -80,6 +80,43 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>ForCase7644__c</fullName>
+        <externalId>false</externalId>
+        <label>ForCase7644</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Uno</fullName>
+                    <default>false</default>
+                    <label>Uno</label>
+                </value>
+                <value>
+                    <fullName>Dos</fullName>
+                    <default>false</default>
+                    <label>Dos</label>
+                </value>
+                <value>
+                    <fullName>Tres</fullName>
+                    <default>false</default>
+                    <label>Tres</label>
+                </value>
+                <value>
+                    <fullName>Cuatro</fullName>
+                    <default>false</default>
+                    <label>Cuatro</label>
+                </value>
+                <value>
+                    <fullName>Cinco</fullName>
+                    <default>false</default>
+                    <label>Cinco</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>ForCase__c</fullName>
         <externalId>false</externalId>
         <formula>YEAR( TODAY() ) != 2018</formula>
